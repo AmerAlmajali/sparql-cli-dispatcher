@@ -30,21 +30,18 @@ Copy `publications.ttl` from your Integration 9A repo into `data/`:
 cp /path/to/integration-9a/data/publications.ttl data/
 ```
 
-### 4 — Start Fuseki
-
-Reuse the `docker-compose.yml` from Integration 9A (place it in the repo root), then:
+### 4 — Start Fuseki and load data
 
 ```bash
 docker compose up -d
+python load_dataset.py
 ```
 
-Fuseki will be available at `http://localhost:3030`.  
-Load the dataset once:
+`load_dataset.py` waits up to 60 seconds for Fuseki to be ready, then POSTs `data/publications.ttl` into the `publications` dataset with HTTP Basic Auth (defaults: `admin`/`admin`, matching the `docker-compose.yml`). You only need to run it once — data persists in the Docker volume.
 
+To override credentials:
 ```bash
-curl -X POST http://localhost:3030/publications/data \
-  --data-binary @data/publications.ttl \
-  -H "Content-Type: text/turtle"
+FUSEKI_USER=admin FUSEKI_PASSWORD=yourpassword python load_dataset.py
 ```
 
 ### 5 — Run queries
