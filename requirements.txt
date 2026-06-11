@@ -1,0 +1,4 @@
+rdflib>=6.3,<7
+SPARQLWrapper>=2.0,<3
+requests>=2.31
+pytest>=7.4
